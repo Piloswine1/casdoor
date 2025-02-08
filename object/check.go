@@ -238,11 +238,11 @@ func CheckPassword(user *User, password string, lang string, options ...bool) er
 	}
 
 	if organization == nil {
-		return fmt.Errorf(i18n.Translate(lang, "check:Organization does not exist"))
+		return fmt.Errorf("%s", i18n.Translate(lang, "check:Organization does not exist"))
 	}
 
 	if password == "" {
-		return fmt.Errorf(i18n.Translate(lang, "check:Password cannot be empty"))
+		return fmt.Errorf("%s", i18n.Translate(lang, "check:Password cannot be empty"))
 	}
 
 	passwordType := user.PasswordType
@@ -307,7 +307,7 @@ func CheckLdapUserPassword(user *User, password string, lang string) error {
 		}
 		if len(searchResult.Entries) > 1 {
 			conn.Close()
-			return fmt.Errorf(i18n.Translate(lang, "check:Multiple accounts with same uid, please check your ldap server"))
+			return fmt.Errorf("%s", i18n.Translate(lang, "check:Multiple accounts with same uid, please check your ldap server"))
 		}
 
 		hit = true

@@ -170,6 +170,13 @@ func (c *ApiController) GetOAuthToken() {
 	tag := c.Input().Get("tag")
 	avatar := c.Input().Get("avatar")
 	refreshToken := c.Input().Get("refresh_token")
+	agent := c.Ctx.Input.Header("User-Agent")
+	source := c.Ctx.Input.Header("X-Source")
+	ip := c.Ctx.Input.IP()
+
+	if source == "" {
+		source = "web"
+	}
 
 	if clientId == "" && clientSecret == "" {
 		clientId, clientSecret, _ = c.Ctx.Request.BasicAuth()
@@ -220,7 +227,7 @@ func (c *ApiController) GetOAuthToken() {
 	}
 
 	host := c.Ctx.Request.Host
-	token, err := object.GetOAuthToken(grantType, clientId, clientSecret, code, verifier, scope, nonce, username, password, host, refreshToken, tag, avatar, c.GetAcceptLanguage())
+	token, err := object.GetOAuthToken(grantType, clientId, clientSecret, code, verifier, scope, nonce, username, password, host, refreshToken, tag, avatar, agent, source, ip, c.GetAcceptLanguage())
 	if err != nil {
 		c.ResponseError(err.Error())
 		return

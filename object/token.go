@@ -43,6 +43,11 @@ type Token struct {
 	CodeChallenge    string `xorm:"varchar(100)" json:"codeChallenge"`
 	CodeIsUsed       bool   `json:"codeIsUsed"`
 	CodeExpireIn     int64  `json:"codeExpireIn"`
+
+	Agent  string `xorm:"varchar(255)" json:"agent"`
+	Ip     string `xorm:"varchar(50)" json:"ip"`
+	// X-Source header
+	Source string `xorm:"varchar(20)" json:"source"`
 }
 
 func GetTokenCount(owner, organization, field, value string) (int64, error) {
@@ -205,6 +210,7 @@ func AddToken(token *Token) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	//TODO: remove old tokens
 
 	return affected != 0, nil
 }
